@@ -110,7 +110,11 @@ paths:
 
         The source code of this enpoint is avaliable at GitHub repo — UNKNOWN FIXME
 
-        The response is the JSON array with zero or more JSON objects.
+        This endpoint is not working in this interactive documentation, so here is curl:
+
+        ```
+        curl https://data.sensor.community/static/v1/data.json
+        ```
       tags:
         - read
 
@@ -119,6 +123,12 @@ paths:
       summary: Get average of all measurements per sensor of the last 5 minutes for all sensors
       description: |
         Warning! This endpoint return much data, tens of megabytes.
+
+        This endpoint is not working in this interactive documentation, so here is curl:
+
+        ```
+        curl https://data.sensor.community/static/v2/data.json
+        ```
       tags:
         - read
 
@@ -127,6 +137,12 @@ paths:
       summary: Get average of all measurements per sensor of the last hour
       description: |
         Warning! This endpoint return much data, tens of megabytes.
+
+        This endpoint is not working in this interactive documentation, so here is curl:
+
+        ```
+        curl https://data.sensor.community/static/v2/data.1h.json
+        ```
       tags:
         - read
 
@@ -135,6 +151,12 @@ paths:
       summary: Get average of all measurements per sensor of the 24 hours
       description: |
         Warning! This endpoint return much data, tens of megabytes.
+
+        This endpoint is not working in this interactive documentation, so here is curl:
+
+        ```
+        curl https://data.sensor.community/static/v2/data.24h.json
+        ```
       tags:
         - read
 
