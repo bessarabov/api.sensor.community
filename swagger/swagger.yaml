@@ -23,6 +23,10 @@ info:
      * [https://api.sensor.community/v1/](https://api.sensor.community/v1/)
      * [https://github.com/opendata-stuttgart/meta/wiki/EN-APIs](https://github.com/opendata-stuttgart/meta/wiki/EN-APIs)
 
+    ## Terminology
+
+     * measurement station — device that measure data. There may be multiple sensors in one measurement station (e.g. PM and temperature/humidity).
+
     ## Sensor data object
 
     Many endpoints return sensor data. It is a JSON object, here is an example:
