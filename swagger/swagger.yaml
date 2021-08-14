@@ -1,0 +1,60 @@
+---
+openapi: 3.0.0
+
+schemes:
+  - https
+
+host: data.sensor.community
+
+info:
+  description: |
+    ## About this documentation
+
+    This is an unofficial documentation of the API that is used in the project [https://sensor.community](https://sensor.community).
+
+    The source code of this documentation is at [https://github.com/bessarabov/api.sensor.community](https://github.com/bessarabov/api.sensor.community). Feel free to create Pull Request with bug fixes or improvements.
+
+    Maybe, someday this API documentation will be adopted as official and it will be shown at [https://api.sensor.community](https://api.sensor.community) and the source code will be moved to [https://github.com/opendata-stuttgart](https://github.com/opendata-stuttgart). But for now this is just an unofficial attempt to create documentation.
+
+    This documentation is created with openapi/swagger. It is interactive. You can enter values in for the endpoints and see here the results of the requests right in the browser.
+
+    ## Other documentations
+
+    Now there are several places where API is described:
+
+     * [https://api.sensor.community/v1/](https://api.sensor.community/v1/)
+     * [https://github.com/opendata-stuttgart/meta/wiki/EN-APIs](https://github.com/opendata-stuttgart/meta/wiki/EN-APIs)
+
+paths:
+
+  "/airrohr/v1/sensor/{sensorId}/":
+    get:
+      summary: Get info about one sensor for the last 5 minutes
+      description: |
+        With this endpoint you get get all the measures of the last 5 minutes for the the specific sensor. You can find sensor ID with the map [https://sensor.community](https://sensor.community).Usually there are 2 measures in the endpoint response.
+
+        Don't forget to specify the slash (`/`) after sensor ID, without it the endpoint will return 404.
+
+        The source code of this enpoint is avaliable at GitHub repo — UNKNOWN FIXME
+
+        The response is the JSON array with zero or more JSON objects.
+      parameters:
+      - description: Sensor ID
+        in: path
+        name: sensorId
+        required: true
+        example: 489
+        type: integer
+      responses:
+        '200':
+          description: successful operation
+
+  "/static/v1/data.json":
+    get:
+      summary: Get info about all the sensors for the last 5 minutes
+      description: |
+        Warning! This endpoint return much data, tens of megabytes.
+
+        The source code of this enpoint is avaliable at GitHub repo — UNKNOWN FIXME
+
+        The response is the JSON array with zero or more JSON objects.
