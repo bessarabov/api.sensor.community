@@ -34,7 +34,7 @@ paths:
 
   "/airrohr/v1/sensor/{sensorId}/":
     get:
-      summary: Get info about one sensor for the last 5 minutes
+      summary: Get info from one sensor for the last 5 minutes
       description: |
         With this endpoint you get get all the measures of the last 5 minutes for the the specific sensor. You can find sensor ID with the map [https://sensor.community](https://sensor.community).Usually there are 2 measures in the endpoint response.
 
@@ -59,7 +59,7 @@ paths:
 
   "/static/v1/data.json":
     get:
-      summary: Get info about all the sensors for the last 5 minutes
+      summary: Get info from all the sensors for the last 5 minutes
       description: |
         Warning! This endpoint return much data, tens of megabytes.
 
