@@ -23,6 +23,50 @@ info:
      * [https://api.sensor.community/v1/](https://api.sensor.community/v1/)
      * [https://github.com/opendata-stuttgart/meta/wiki/EN-APIs](https://github.com/opendata-stuttgart/meta/wiki/EN-APIs)
 
+    ## Sensor data object
+
+    Many endpoints return sensor data. It is a JSON object, here is an example:
+
+    `timestamp` is in UTC
+
+      ```
+      {
+        "id": 6489703325,
+        "timestamp": "2021-08-14 16:09:32",
+        "sampling_rate": null,
+        "location": {
+          "longitude": "11.576",
+          "latitude": "48.12",
+          "id": 231,
+          "country": "DE",
+          "indoor": 0,
+          "exact_location": 0,
+          "altitude": "516.9"
+        },
+        "sensor": {
+          "id": 489,
+          "sensor_type": {
+            "id": 14,
+            "name": "SDS011",
+            "manufacturer": "Nova Fitness"
+          },
+          "pin": "1"
+        },
+        "sensordatavalues": [
+          {
+            "id": 14216406071,
+            "value_type": "P1",
+            "value": "11.53"
+          },
+          {
+            "id": 14216406074,
+            "value_type": "P2",
+            "value": "8.70"
+          }
+        ]
+      }
+      ```
+
 tags:
   - name: read
     description: Get data from sensor.community
@@ -42,7 +86,8 @@ paths:
 
         The source code of this enpoint is avaliable at GitHub repo — UNKNOWN FIXME
 
-        The response is the JSON array with zero or more JSON objects.
+        The response is the JSON array with zero or more JSON sensor data objects.
+
 
       tags:
         - read
