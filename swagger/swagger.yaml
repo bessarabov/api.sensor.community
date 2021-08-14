@@ -68,3 +68,12 @@ paths:
         The response is the JSON array with zero or more JSON objects.
       tags:
         - read
+
+  "/v1/push-sensor-data/":
+    post:
+      servers:
+        - url: https://api.sensor.community
+
+      summary: Send data to sensors.community
+      tags:
+        - write
