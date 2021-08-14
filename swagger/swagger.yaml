@@ -164,6 +164,17 @@ paths:
       tags:
         - read
 
+  "/":
+    get:
+      servers:
+        - url: https://archive.sensor.community
+
+      summary: Get archive of measurements
+      description: |
+        Open in your browser [https://archive.sensor.community/](https://archive.sensor.community/).
+      tags:
+        - read
+
   "/v1/push-sensor-data/":
     post:
       servers:
