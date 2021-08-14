@@ -1,10 +1,8 @@
 ---
 openapi: 3.0.0
 
-schemes:
-  - https
-
-host: data.sensor.community
+servers:
+  - url: https://data.sensor.community
 
 info:
   description: |
