@@ -1,9 +1,6 @@
 ---
 openapi: 3.0.0
 
-servers:
-  - url: https://data.sensor.community
-
 info:
   description: |
     ## About this documentation
@@ -12,20 +9,33 @@ info:
 
     The source code of this documentation is at [https://github.com/bessarabov/api.sensor.community](https://github.com/bessarabov/api.sensor.community). Feel free to create Pull Request with bug fixes or improvements.
 
-    Maybe, someday this API documentation will be adopted as official and it will be shown at [https://api.sensor.community](https://api.sensor.community) and the source code will be moved to [https://github.com/opendata-stuttgart](https://github.com/opendata-stuttgart). But for now this is just an unofficial attempt to create documentation.
+    Maybe, someday this API documentation will be adopted as official and it will be shown at [https://api.sensor.community](https://api.sensor.community) and the source code will be moved to [https://github.com/opendata-stuttgart](https://github.com/opendata-stuttgart). But for now this is unofficial documentation.
 
-    This documentation is created with openapi/swagger. It is interactive. You can enter values in for the endpoints and see here the results of the requests right in the browser.
+    This documentation is created with openapi/swagger. It is interactive. For some endpoints you can send requests and see the responses directly on this page.
 
-    ## Other documentations
+    ## Official documentation
 
-    Now there are several places where API is described:
+    Now there are several official places with official documentation:
 
-     * [https://api.sensor.community/v1/](https://api.sensor.community/v1/)
      * [https://github.com/opendata-stuttgart/meta/wiki/EN-APIs](https://github.com/opendata-stuttgart/meta/wiki/EN-APIs)
+     * [https://github.com/opendata-stuttgart/meta/wiki/APIs](https://github.com/opendata-stuttgart/meta/wiki/APIs) — in German language
+     * [https://api.sensor.community/v1/](https://api.sensor.community/v1/)
 
     ## Terminology
 
-     * measurement station — device that measure data. There may be multiple sensors in one measurement station (e.g. PM and temperature/humidity).
+     * measurement station — device that measure data. Sometimes it is called "node". There may be multiple sensors in one measurement station (e.g. PM and temperature/humidity).
+     * sensor — element of the measurement station that does the measurements. Sensor often measure several difrent values. For example particulate matter sensor SDS011 measure two values: PM2.5 and PM10. One more example: sensor BME280 measures temperature, humidity and pressure.
+
+    In this API there are a lot of difrent IDs. There is a huge problem with the naming of IDs. In difrent parts of sensor.community the same things are named differently and the difrent things are named the same way. Here is an unofficial attempt to name all that things:
+
+     * StationNumber — (example `37831`) this is just a number. It is created by sensor.community when you register your measurement station at [https://devices.sensor.community/](https://devices.sensor.community/) This number is incremental. One person register new station — get StationNumber = 37831, the next person register new station — get StationNumber = 37832.
+     * StationUniqID — (example `esp8266-123456789` or `raspi-3b4838fa`).
+     * SensorID (example `44700`)
+
+    Here is an example. There can be a measurement station with StationNumber = 37831, StationUniqID = esp8266-123456789 that has connected two sensors:
+
+      * SensorID = 44700 that measures PM2.5 & PM10
+      * SensorID = 44701 that measures temperature, humidity and pressure
 
     ## Sensor data object
 
@@ -80,8 +90,12 @@ tags:
 
 paths:
 
-  "/airrohr/v1/sensor/{sensorId}/":
+  "/airrohr/v1/sensor/{SensorID}/":
     get:
+
+      servers:
+        - url: https://data.sensor.community
+
       summary: Get info from one sensor for the last 5 minutes
       description: |
         With this endpoint you get get all the measures of the last 5 minutes for the the specific sensor. You can find sensor ID with the map [https://sensor.community](https://sensor.community).Usually there are 2 measures in the endpoint response.
@@ -92,13 +106,12 @@ paths:
 
         The response is the JSON array with zero or more JSON sensor data objects.
 
-
       tags:
         - read
       parameters:
       - description: Sensor ID
         in: path
-        name: sensorId
+        name: SensorID
         required: true
         example: 489
         type: integer
@@ -108,6 +121,10 @@ paths:
 
   "/static/v1/data.json":
     get:
+
+      servers:
+        - url: https://data.sensor.community
+
       summary: Get info from all the sensors for the last 5 minutes
       description: |
         Warning! This endpoint return much data, tens of megabytes.
@@ -124,6 +141,10 @@ paths:
 
   "/static/v2/data.json":
     get:
+
+      servers:
+        - url: https://data.sensor.community
+
       summary: Get average of all measurements per sensor of the last 5 minutes for all sensors
       description: |
         Warning! This endpoint return much data, tens of megabytes.
@@ -138,6 +159,10 @@ paths:
 
   "/static/v2/data.1h.json":
     get:
+
+      servers:
+        - url: https://data.sensor.community
+
       summary: Get average of all measurements per sensor of the last hour
       description: |
         Warning! This endpoint return much data, tens of megabytes.
@@ -152,6 +177,10 @@ paths:
 
   "/static/v2/data.24h.json":
     get:
+
+      servers:
+        - url: https://data.sensor.community
+
       summary: Get average of all measurements per sensor of the 24 hours
       description: |
         Warning! This endpoint return much data, tens of megabytes.
@@ -166,6 +195,7 @@ paths:
 
   "/":
     get:
+
       servers:
         - url: https://archive.sensor.community
 
@@ -177,9 +207,34 @@ paths:
 
   "/v1/push-sensor-data/":
     post:
+
       servers:
         - url: https://api.sensor.community
 
       summary: Send data to sensors.community
+      description: |
+
+        This enpoint is used to send sensor data to sensor.community.
+
+        Source code of this API is avaliable at [https://github.com/opendata-stuttgart/feinstaub-api](https://github.com/opendata-stuttgart/feinstaub-api)
+
       tags:
         - write
+
+      parameters:
+        - name: "X-Sensor"
+          in: "header"
+          required: true
+          type: "string"
+          description: This header should contain information with StationUniqID
+          example: esp8266-123456789
+        - name: "X-Pin"
+          in: "header"
+          required: true
+          type: "integer"
+          description: This header should contain number that describes the type of the sensor. It is `1` for SDS011, `11` for BME280 and there are other possible numbers (Where to get the full list UNKNOWN FIXME)
+          example: 1
+        - in: "body"
+          name: "body"
+          required: true
+          description: Data with the measurements
