@@ -132,6 +132,28 @@ paths:
         '200':
           description: successful operation
 
+  "/airrohr/v1/filter/{query}/":
+    get:
+
+      servers:
+        - url: https://data.sensor.community
+
+      summary: Get info from sensors filtered by `query` for the last 5 minutes
+
+      tags:
+        - data
+
+      description: |
+        `query`:
+
+          * `type={sensor type}` : comma-separated list of sensor types, e.g. SDS011,BME280
+          * `area={lat,lon,distance}` : all sensors within a max radius e.g. 52.5200,13.4050,10 (Berlin). The unit of measurements of `distance` is UNKNOWN FIXME
+          * `box={lat1,lon1,lat2,lon2}` : all sensors in a 'box' with the given coordinates e.g. 52.1,13.0,53.5,13.5
+          * `country={country code}` : comma-separated list of country codes. Example BE,DE,NL
+
+         `query` option is a strange thing. This is not query part of URL, this is the part of pathname.
+         You can't specify `/airrohr/v1/filter/?type=BME280`, you need to use `/airrohr/v1/filter/type=BME280`, but you can specify serverl queris: `/airrohr/v1/filter/type=BME280&country=IN`
+
   "/static/v1/data.json":
     get:
 
@@ -254,3 +276,31 @@ paths:
           name: "body"
           required: true
           description: Data with the measurements
+          schema:
+            $ref: "#/definitions/SensorDataFromStation"
+
+
+definitions:
+  SensorDataFromStation:
+    type: "object"
+    properties:
+
+      software_version:
+        type: "string"
+        example: "..."
+        required: false
+
+      sensordatavalues:
+        type: "array"
+        required: true
+        items:
+          type: "object"
+          properties:
+            value_type:
+              type: "string"
+              example: "P1"
+              required: true
+            value:
+              type: "string"
+              example: 8
+              required: true
