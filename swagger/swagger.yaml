@@ -90,6 +90,14 @@ info:
     * `sensordatavalues.value_type` — P1 for PM10, PM2 for PM2.5 and a lot of other options (Where to get the full list UNKNOWN FIXME)
     * `location.id` — UNKNOWN FIXME
 
+    ## How to send data to sensor.community
+
+     * Read the section "Terminology" to understand the basic consepts
+     * Register at the site [https://devices.sensor.community/](https://devices.sensor.community/)
+     * Go to [https://devices.sensor.community/sensors/register](https://devices.sensor.community/sensors/register). It is called "Sensor registration", but acutally it is registtraion of the "measurement station" and the sensors that are connected to it. In the field "Sensor ID" you need to enter the numbers from `StationUniqID`. If you are using ESP8266 or ESP32 and know how to find out ChipID of this board, you can use that number, If you are using raspberry PI you can enter value of the `Serial` field from the file `/proc/cpuinfo`. Or you can generate a big random number and use it.
+     * Read documentation of endpoint `/v1/push-sensor-data/` and use it to send data
+     * After sending data check that you see your data at `/airrohr/v1/sensor/{SensorID}/` (It take about a minute or two after sending data to `/v1/push-sensor-data/` to see it at `/airrohr/v1/sensor/{SensorID}/`)
+
 tags:
   - name: data
     description: Enpoints that are working on the server https://data.sensor.community
