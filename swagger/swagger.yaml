@@ -28,65 +28,76 @@ info:
 
     In this API there are a lot of difrent IDs. There is a huge problem with the naming of IDs. In difrent parts of sensor.community the same things are named differently and the difrent things are named the same way. Here is an unofficial attempt to name all that things:
 
-     * StationNumber — (example `37831`) this is just a number. It is created by sensor.community when you register your measurement station at [https://devices.sensor.community/](https://devices.sensor.community/) This number is incremental. One person register new station — get StationNumber = 37831, the next person register new station — get StationNumber = 37832.
-     * StationUniqID — (example `esp8266-123456789` or `raspi-3b4838fa`).
-     * SensorID (example `44700`)
+     * `StationNumber` — (example `37831`) this is just a number. It is created by sensor.community when you register your measurement station at [https://devices.sensor.community/](https://devices.sensor.community/) This number is incremental. One person register new station — get StationNumber = 37831, the next person register new station — get StationNumber = 37832.
+     * `StationUniqID` — (example `esp8266-123456789` or `raspi-3b4838fa`). Sometimes it is called `ChipID` and on the site [https://devices.sensor.community/sensors](https://devices.sensor.community/sensors) is called `Sensor UID`
+     * `SensorID` (example `44700`) — This is the ID that you see on the map [https://sensor.community](https://sensor.community)
 
     Here is an example. There can be a measurement station with StationNumber = 37831, StationUniqID = esp8266-123456789 that has connected two sensors:
 
       * SensorID = 44700 that measures PM2.5 & PM10
       * SensorID = 44701 that measures temperature, humidity and pressure
 
-    ## Sensor data object
+    ## Measurements data object
 
-    Many endpoints return sensor data. It is a JSON object, here is an example:
+    Many endpoints return measurements data. It is a JSON object, here is an example:
 
-    `timestamp` is in UTC
-
-      ```
-      {
-        "id": 6489703325,
-        "timestamp": "2021-08-14 16:09:32",
-        "sampling_rate": null,
-        "location": {
-          "longitude": "11.576",
-          "latitude": "48.12",
-          "id": 231,
-          "country": "DE",
-          "indoor": 0,
-          "exact_location": 0,
-          "altitude": "516.9"
+    ```
+    {
+      "id": 6489703325,
+      "timestamp": "2021-08-14 16:09:32",
+      "sampling_rate": null,
+      "sensor": {
+        "id": 489,
+        "sensor_type": {
+          "id": 14,
+          "name": "SDS011",
+          "manufacturer": "Nova Fitness"
         },
-        "sensor": {
-          "id": 489,
-          "sensor_type": {
-            "id": 14,
-            "name": "SDS011",
-            "manufacturer": "Nova Fitness"
-          },
-          "pin": "1"
+        "pin": "1"
+      },
+      "sensordatavalues": [
+        {
+          "id": 14216406071,
+          "value_type": "P1",
+          "value": "11.53"
         },
-        "sensordatavalues": [
-          {
-            "id": 14216406071,
-            "value_type": "P1",
-            "value": "11.53"
-          },
-          {
-            "id": 14216406074,
-            "value_type": "P2",
-            "value": "8.70"
-          }
-        ]
+        {
+          "id": 14216406074,
+          "value_type": "P2",
+          "value": "8.70"
+        }
+      ],
+      "location": {
+        "longitude": "11.576",
+        "latitude": "48.12",
+        "id": 231,
+        "country": "DE",
+        "indoor": 0,
+        "exact_location": 0,
+        "altitude": "516.9"
       }
-      ```
+    }
+    ```
+
+    * `id` — MeasurementID, this ID you get after POST-ing data to endpoint `/v1/push-sensor-data/`
+    * `timestamp` is in UTC
+    * `sampling_rate` — there are vey few measurement station that send data to this field, it is usually `null`
+    * `sensor.id` — SensorID
+    * `sensor.sensor_type` — 14 for SDS011, 17 for BME280 and a lot of other options (Where to get the full list UNKNOWN FIXME)
+    * `sensor.pin` — this is the value that was sent in header `X-Pin` to enpoint `/v1/push-sensor-data/`
+    * `sensordatavalues.id` — MeasurementValueID
+    * `sensordatavalues.value_type` — P1 for PM10, PM2 for PM2.5 and a lot of other options (Where to get the full list UNKNOWN FIXME)
+    * `location.id` — UNKNOWN FIXME
 
 tags:
-  - name: read
-    description: Get data from sensor.community
+  - name: data
+    description: Enpoints that are working on the server https://data.sensor.community
 
-  - name: write
-    description: Send data to sensor.community
+  - name: api
+    description: Enpoints that are working on the server https://api.sensor.community
+
+  - name: archive
+    description: Enpoints that are working on the server https://archive.sensor.community
 
 paths:
 
@@ -107,7 +118,8 @@ paths:
         The response is the JSON array with zero or more JSON sensor data objects.
 
       tags:
-        - read
+        - data
+
       parameters:
       - description: Sensor ID
         in: path
@@ -136,8 +148,9 @@ paths:
         ```
         curl https://data.sensor.community/static/v1/data.json
         ```
+
       tags:
-        - read
+        - data
 
   "/static/v2/data.json":
     get:
@@ -155,7 +168,7 @@ paths:
         curl https://data.sensor.community/static/v2/data.json
         ```
       tags:
-        - read
+        - data
 
   "/static/v2/data.1h.json":
     get:
@@ -172,8 +185,9 @@ paths:
         ```
         curl https://data.sensor.community/static/v2/data.1h.json
         ```
+
       tags:
-        - read
+        - data
 
   "/static/v2/data.24h.json":
     get:
@@ -191,7 +205,7 @@ paths:
         curl https://data.sensor.community/static/v2/data.24h.json
         ```
       tags:
-        - read
+        - data
 
   "/":
     get:
@@ -202,8 +216,9 @@ paths:
       summary: Get archive of measurements
       description: |
         Open in your browser [https://archive.sensor.community/](https://archive.sensor.community/).
+
       tags:
-        - read
+        - archive
 
   "/v1/push-sensor-data/":
     post:
@@ -219,7 +234,7 @@ paths:
         Source code of this API is avaliable at [https://github.com/opendata-stuttgart/feinstaub-api](https://github.com/opendata-stuttgart/feinstaub-api)
 
       tags:
-        - write
+        - api
 
       parameters:
         - name: "X-Sensor"
