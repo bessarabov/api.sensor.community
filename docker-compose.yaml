@@ -1,9 +1,11 @@
-swagger-ui:
-  container_name: api-sensor-community-swagger-ui
-  image: swaggerapi/swagger-ui:v3.52.0
-  volumes:
-    - ./swagger/:/swagger/
-  environment:
-    - SWAGGER_JSON=/swagger/swagger.yaml
-  ports:
-    - "8235:8080"
+version: "3.8"
+services:
+  swagger-ui:
+    container_name: api-sensor-community-swagger-ui
+    image: swaggerapi/swagger-ui
+    volumes:
+      - ./swagger/:/swagger/
+    environment:
+      - SWAGGER_JSON=/swagger/swagger.yaml
+    ports:
+      - "8235:8080"
