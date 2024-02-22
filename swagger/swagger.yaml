@@ -99,6 +99,41 @@ info:
      * Read documentation of endpoint `/v1/push-sensor-data/` and use it to send data
      * After sending data check that you see your data at `/airrohr/v1/sensor/{SensorID}/` (It take about a minute or two after sending data to `/v1/push-sensor-data/` to see it at `/airrohr/v1/sensor/{SensorID}/`)
 
+    ## Sensors in common use
+
+      ```
+      sensor.id  sensor.sensor_type   Proportion
+      14         SDS011               49%
+      17         BME280               20%
+      9          DHT22                19%
+      29         DNMS (Laerm)         2%
+      37         SPS30                1%
+      23         PMS5003              1%
+      20         BMP280               1%
+      27         SHT31                1%
+      22         PMS7003              <1%
+      26         SHT30                <1%
+      8          BMP180               <1%
+      19         HTU21D               <1%
+      36         Radiation Si22G      <1%
+      13         DS18B20              <1%
+      21         PMS1003              <1%
+      28         SHT35                <1%
+      15         GPS-NEO-6M           <1%
+      42         NextPM               <1%
+      16         PMS3003              <1%
+      40         SCD30                <1%
+      25         HPM                  <1%
+      1          PPD42NS              <1%
+      31         Radiation SBM-20     <1%
+      18         SDS021               <1%
+      39         SHT85                <1%
+      5          SHT11                <1%
+      35         Radiation SBM-19     <1%
+      12         DS18S20              <1%
+      ```
+
+
 tags:
   - name: data
     description: Endpoints that are working on the server https://data.sensor.community
