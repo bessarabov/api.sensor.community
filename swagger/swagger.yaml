@@ -21,13 +21,14 @@ info:
      * [https://github.com/opendata-stuttgart/meta/wiki/EN-APIs](https://github.com/opendata-stuttgart/meta/wiki/EN-APIs)
      * [https://github.com/opendata-stuttgart/meta/wiki/APIs](https://github.com/opendata-stuttgart/meta/wiki/APIs) — in German language
      * [https://api.sensor.community/v1/](https://api.sensor.community/v1/)
+     * [For a description of the standard firmware](https://github.com/opendata-stuttgart/sensors-software/blob/master/airrohr-firmware/Readme.md)
 
     ## Terminology
 
      * measurement station — device that measure data. Sometimes it is called "node". There may be multiple sensors in one measurement station (e.g. PM and temperature/humidity).
-     * sensor — element of the measurement station that does the measurements. Sensor often measure several difrent values. For example particulate matter sensor SDS011 measure two values: PM2.5 and PM10. One more example: sensor BME280 measures temperature, humidity and pressure.
+     * sensor — element of the measurement station that does the measurements. Sensor often measure several different values. For example particulate matter sensor SDS011 measure two values: PM2.5 and PM10. One more example: sensor BME280 measures temperature, humidity and pressure.
 
-    In this API there are a lot of difrent IDs. There is a huge problem with the naming of IDs. In difrent parts of sensor.community the same things are named differently and the difrent things are named the same way. Here is an unofficial attempt to name all that things:
+    In this API there are a lot of different IDs. There is a huge problem with the naming of IDs. In different parts of sensor.community the same things are named differently and the different things are named the same way. Here is an unofficial attempt to name all that things:
 
      * `StationNumber` — (example `37831`) this is just a number. It is created by sensor.community when you register your measurement station at [https://devices.sensor.community/](https://devices.sensor.community/) This number is incremental. One person register new station — get StationNumber = 37831, the next person register new station — get StationNumber = 37832.
      * `StationUniqID` — (example `esp8266-123456789` or `raspi-3b4838fa`). Sometimes it is called `ChipID` and on the site [https://devices.sensor.community/sensors](https://devices.sensor.community/sensors) is called `Sensor UID`
@@ -84,29 +85,29 @@ info:
     * `timestamp` is in UTC
     * `sampling_rate` — there are vey few measurement station that send data to this field, it is usually `null`
     * `sensor.id` — SensorID
-    * `sensor.sensor_type` — 14 for SDS011, 17 for BME280 and a lot of other options (Where to get the full list UNKNOWN FIXME)
-    * `sensor.pin` — this is the value that was sent in header `X-Pin` to enpoint `/v1/push-sensor-data/`
+    * `sensor.sensor_type` — 14 for SDS011, 17 for BME280 and a lot of other options (See below for the full list)
+    * `sensor.pin` — this is the value that was sent in header `X-Pin` to endpoint `/v1/push-sensor-data/`
     * `sensordatavalues.id` — MeasurementValueID
     * `sensordatavalues.value_type` — P1 for PM10, PM2 for PM2.5 and a lot of other options (Where to get the full list UNKNOWN FIXME)
     * `location.id` — UNKNOWN FIXME
 
     ## How to send data to sensor.community
 
-     * Read the section "Terminology" to understand the basic consepts
+     * Read the section "Terminology" to understand the basic concepts
      * Register at the site [https://devices.sensor.community/](https://devices.sensor.community/)
-     * Go to [https://devices.sensor.community/sensors/register](https://devices.sensor.community/sensors/register). It is called "Sensor registration", but acutally it is registtraion of the "measurement station" and the sensors that are connected to it. In the field "Sensor ID" you need to enter the numbers from `StationUniqID`. If you are using ESP8266 or ESP32 and know how to find out ChipID of this board, you can use that number, If you are using raspberry PI you can enter value of the `Serial` field from the file `/proc/cpuinfo`. Or you can generate a big random number and use it.
+     * Go to [https://devices.sensor.community/sensors/register](https://devices.sensor.community/sensors/register). It is called "Sensor registration", but actually it is registration of the "measurement station" and the sensors that are connected to it. In the field "Sensor ID" you need to enter the numbers from `StationUniqID`. If you are using ESP8266 or ESP32 and know how to find out ChipID of this board, you can use that number, If you are using raspberry PI you can enter value of the `Serial` field from the file `/proc/cpuinfo`. Or you can generate a big random number and use it.
      * Read documentation of endpoint `/v1/push-sensor-data/` and use it to send data
      * After sending data check that you see your data at `/airrohr/v1/sensor/{SensorID}/` (It take about a minute or two after sending data to `/v1/push-sensor-data/` to see it at `/airrohr/v1/sensor/{SensorID}/`)
 
 tags:
   - name: data
-    description: Enpoints that are working on the server https://data.sensor.community
+    description: Endpoints that are working on the server https://data.sensor.community
 
   - name: api
-    description: Enpoints that are working on the server https://api.sensor.community
+    description: Endpoints that are working on the server https://api.sensor.community
 
   - name: archive
-    description: Enpoints that are working on the server https://archive.sensor.community
+    description: Endpoints that are working on the server https://archive.sensor.community
 
 paths:
 
@@ -122,7 +123,7 @@ paths:
 
         Don't forget to specify the slash (`/`) after sensor ID, without it the endpoint will return 404.
 
-        The source code of this enpoint is avaliable at GitHub repo — UNKNOWN FIXME
+        The source code of this endpoint is available at GitHub repo — UNKNOWN FIXME
 
         The response is the JSON array with zero or more JSON sensor data objects.
 
@@ -160,7 +161,7 @@ paths:
           * `country={country code}` : comma-separated list of country codes. Example BE,DE,NL
 
          `query` option is a strange thing. This is not query part of URL, this is the part of pathname.
-         You can't specify `/airrohr/v1/filter/?type=BME280`, you need to use `/airrohr/v1/filter/type=BME280`, but you can specify serverl queris: `/airrohr/v1/filter/type=BME280&country=IN`
+         You can't specify `/airrohr/v1/filter/?type=BME280`, you need to use `/airrohr/v1/filter/type=BME280`, but you can specify server queries: `/airrohr/v1/filter/type=BME280&country=IN`
 
   "/static/v1/data.json":
     get:
@@ -172,7 +173,7 @@ paths:
       description: |
         Warning! This endpoint return much data, tens of megabytes.
 
-        The source code of this enpoint is avaliable at GitHub repo — UNKNOWN FIXME
+        The source code of this endpoint is available at GitHub repo — UNKNOWN FIXME
 
         This endpoint is not working in this interactive documentation, so here is curl:
 
@@ -262,7 +263,7 @@ paths:
 
         This enpoint is used to send sensor data to sensor.community.
 
-        Source code of this API is avaliable at [https://github.com/opendata-stuttgart/feinstaub-api](https://github.com/opendata-stuttgart/feinstaub-api)
+        Source code of this API is available at [https://github.com/opendata-stuttgart/feinstaub-api](https://github.com/opendata-stuttgart/feinstaub-api)
 
       tags:
         - api
